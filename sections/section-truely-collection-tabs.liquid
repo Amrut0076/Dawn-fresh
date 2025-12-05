@@ -398,7 +398,51 @@
           return;
         }
 
+  function addTruelyToCart(btn, defaultVariantId) {
+    const card = btn.closest('.truely-card');
+    const select = card.querySelector('select.truely-variant-select');
+    const variantId = select ? select.value : defaultVariantId;
+
+    if (!variantId) {
+      alert('Please select a variant.');
+      return;
+    }
+
+    const cartDrawer = document.querySelector('cart-drawer');
+    const cartNotification = document.querySelector('cart-notification');
+    const cart = cartDrawer || cartNotification;
+
+    let formData = new FormData();
+    formData.append('id', variantId);
+    formData.append('quantity', 1);
+
+    // Hardcode sections to ensure we get the right ones
+    const sections = ['cart-drawer', 'cart-icon-bubble'];
+    formData.append('sections', sections.join(','));
+    formData.append('sections_url', window.location.pathname);
+
+    const config = {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: formData
+    };
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', config)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          alert(data.description);
+          return;
+        }
+
         if (cart) {
+          // Manually remove is-empty class to ensure drawer shows content
+          cart.classList.remove('is-empty');
+          const drawerItems = cart.querySelector('cart-drawer-items');
+          if (drawerItems) drawerItems.classList.remove('is-empty');
+
           cart.renderContents(data);
         } else {
           window.location.href = '/cart';

@@ -444,6 +444,11 @@
           if (drawerItems) drawerItems.classList.remove('is-empty');
 
           cart.renderContents(data);
+
+          // Explicitly open the drawer/notification if renderContents doesn't trigger it immediately
+          if (cart.tagName === 'CART-DRAWER' && typeof cart.open === 'function') {
+             setTimeout(() => cart.open(btn), 100);
+          }
         } else {
           window.location.href = '/cart';
         }

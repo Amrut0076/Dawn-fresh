@@ -83,7 +83,7 @@
         "image": "shopify://shop_images/josef-faustmann-151nS8pCCo0-unsplash.jpg",
         "section_height": 510,
         "overlay_color": "#000000",
-        "overlay_opacity": 0.3,
+        "overlay_opacity": 0.7,
         "text_alignment": "left",
         "text_color": "#FFFFFF",
         "subheading": "Welcome to our store",

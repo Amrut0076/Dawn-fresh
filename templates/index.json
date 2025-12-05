@@ -128,7 +128,7 @@
       "name": "Science Stats",
       "settings": {
         "heading": "Use Science To Feel Better Everyday!",
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "heading_size": 48,
         "heading_size_mobile": 32,
         "heading_color": "#000000",
@@ -140,12 +140,57 @@
         "padding_top": 60,
         "padding_bottom": 60
       }
+    },
+    "section_truely_collection_tabs_6LgTtJ": {
+      "type": "section-truely-collection-tabs",
+      "blocks": {
+        "tab_KQFh4B": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "t1",
+            "collection": "abc",
+            "show_promo": true
+          }
+        },
+        "tab_8G9mkF": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "t2",
+            "collection": "second",
+            "show_promo": true
+          }
+        },
+        "tab_HcMiic": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "t3",
+            "collection": "frontpage",
+            "show_promo": true
+          }
+        }
+      },
+      "block_order": [
+        "tab_KQFh4B",
+        "tab_8G9mkF",
+        "tab_HcMiic"
+      ],
+      "name": "Truely Collection Tabs",
+      "settings": {
+        "heading": "For the Indian Gut",
+        "heading_size": 36,
+        "heading_color": "#0B2351",
+        "bg_color": "#FFFFFF",
+        "products_to_show": 3,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
     "image_banner",
     "featured_collection",
     "section_enterprise_hero_Q68RGN",
-    "section_science_stats_z3tnQP"
+    "section_science_stats_z3tnQP",
+    "section_truely_collection_tabs_6LgTtJ"
   ]
 }

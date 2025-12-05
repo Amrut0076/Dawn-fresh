@@ -85,7 +85,7 @@
         "overlay_color": "#000000",
         "overlay_opacity": 0.7,
         "text_alignment": "left",
-        "text_color": "#FFFFFF",
+        "text_color": "#ffffff",
         "subheading": "Welcome to our store",
         "heading": "Enterprise Quality",
         "text": "<p>Experience the difference with our premium collection.</p>",
@@ -94,11 +94,58 @@
         "button_label_2": "Learn More",
         "button_link_2": ""
       }
+    },
+    "section_science_stats_z3tnQP": {
+      "type": "section-science-stats",
+      "blocks": {
+        "stat_kzaaHY": {
+          "type": "stat",
+          "settings": {
+            "number": "81 %",
+            "text": "<p>Users reported relief from bloating in 4 weeks</p>"
+          }
+        },
+        "stat_pFAGEV": {
+          "type": "stat",
+          "settings": {
+            "number": "97 %",
+            "text": "<p>Users reported improved gut health in 10 days</p>"
+          }
+        },
+        "stat_PTLbVm": {
+          "type": "stat",
+          "settings": {
+            "number": "92 %",
+            "text": "<p>Users reported improved muscle recovery within 2 weeks</p>"
+          }
+        }
+      },
+      "block_order": [
+        "stat_kzaaHY",
+        "stat_pFAGEV",
+        "stat_PTLbVm"
+      ],
+      "name": "Science Stats",
+      "settings": {
+        "heading": "Use Science To Feel Better Everyday!",
+        "bg_color": "#FFFFFF",
+        "heading_size": 48,
+        "heading_size_mobile": 32,
+        "heading_color": "#000000",
+        "number_size": 96,
+        "number_size_mobile": 64,
+        "number_color": "#000000",
+        "text_size": 16,
+        "text_color": "#333333",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
     "image_banner",
     "featured_collection",
-    "section_enterprise_hero_Q68RGN"
+    "section_enterprise_hero_Q68RGN",
+    "section_science_stats_z3tnQP"
   ]
 }

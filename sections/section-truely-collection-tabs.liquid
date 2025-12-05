@@ -369,32 +369,43 @@
     const select = card.querySelector('select.truely-variant-select');
     const variantId = select ? select.value : defaultVariantId;
 
-    let formData = {
-      items: [
-        {
-          id: variantId,
-          quantity: 1,
-        },
-      ],
-    };
+    // Identify which cart type is being used
+    const cartDrawer = document.querySelector('cart-drawer');
+    const cartNotification = document.querySelector('cart-notification');
+    const cart = cartDrawer || cartNotification;
+
+    let sectionsToRender = [];
+    if (cartDrawer) {
+      sectionsToRender = ['cart-drawer', 'cart-icon-bubble'];
+    } else if (cartNotification) {
+      sectionsToRender = ['cart-notification-product', 'cart-notification-button', 'cart-icon-bubble'];
+    }
+
+    let formData = new FormData();
+    formData.append('id', variantId);
+    formData.append('quantity', 1);
+
+    if (sectionsToRender.length > 0) {
+      formData.append('sections', sectionsToRender.join(','));
+      formData.append('sections_url', window.location.pathname);
+    }
 
     fetch(window.Shopify.routes.root + 'cart/add.js', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+      body: formData,
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        // Open cart drawer or show notification
-        // Assuming Dawn theme uses 'cart-notification' or similar
-        const cartNotification = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
-        if (cartNotification) {
-          if (cartNotification.tagName === 'CART-DRAWER') cartNotification.open(cartNotification);
-          else cartNotification.renderContents(data);
+        if (data.status) {
+          // Error handling
+          alert(data.description);
+          return;
+        }
+
+        if (cart) {
+          cart.renderContents(data);
         } else {
           window.location.href = '/cart';
         }

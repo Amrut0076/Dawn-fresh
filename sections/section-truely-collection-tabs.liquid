@@ -310,69 +310,31 @@
                 </div>
 
                 <div class="truely-card-actions">
-                  <product-form class="product-form">
-                    <div class="product-form__error-message-wrapper" role="alert" hidden>
-                      <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
-                      </span>
-                      <span class="product-form__error-message"></span>
+                  {%- if product.variants.size > 1 -%}
+                    <select class="truely-variant-select">
+                      {%- for variant in product.variants -%}
+                        <option value="{{ variant.id }}">{{ variant.title }}</option>
+                      {%- endfor -%}
+                    </select>
+                  {%- else -%}
+                    <input
+                      type="hidden"
+                      class="truely-variant-select"
+                      value="{{ product.selected_or_first_available_variant.id }}"
+                    >
+                    <div
+                      class="truely-variant-select"
+                      style="display:flex; align-items:center; background:#f4f4f4; color:#888; cursor:default;"
+                    >
+                      {{ product.selected_or_first_available_variant.title }}
                     </div>
-                    {%- form 'product',
-                      product,
-                      id: product_form_id,
-                      class: 'form',
-                      novalidate: 'novalidate',
-                      data-type: 'add-to-cart-form'
-                    -%}
-                      <div style="display:flex; gap:10px; width:100%;">
-                        {%- if product.variants.size > 1 -%}
-                          <select name="id" class="truely-variant-select">
-                            {%- for variant in product.variants -%}
-                              <option
-                                value="{{ variant.id }}"
-                                {% if variant == product.selected_or_first_available_variant %}
-                                  selected="selected"
-                                {% endif %}
-                              >
-                                {{ variant.title }}
-                              </option>
-                            {%- endfor -%}
-                          </select>
-                        {%- else -%}
-                          <input
-                            type="hidden"
-                            name="id"
-                            value="{{ product.selected_or_first_available_variant.id }}"
-                          >
-                          <div
-                            class="truely-variant-select"
-                            style="display:flex; align-items:center; background:#f4f4f4; color:#888; cursor:default;"
-                          >
-                            {{ product.selected_or_first_available_variant.title }}
-                          </div>
-                        {%- endif -%}
-                        <button
-                          type="submit"
-                          name="add"
-                          class="truely-add-btn"
-                          aria-haspopup="dialog"
-                        >
-                          <span>Add to Cart</span>
-                          <div class="loading__spinner hidden">
-                            <svg
-                              aria-hidden="true"
-                              focusable="false"
-                              class="spinner"
-                              viewBox="0 0 66 66"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                            </svg>
-                          </div>
-                        </button>
-                      </div>
-                    {%- endform -%}
-                  </product-form>
+                  {%- endif -%}
+                  <button
+                    class="truely-add-btn"
+                    onclick="addTruelyToCart(this, '{{ product.selected_or_first_available_variant.id }}')"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
@@ -399,6 +361,52 @@
     }
     document.getElementById(tabId).style.display = 'grid';
     evt.currentTarget.className += ' active';
+  }
+
+  function addTruelyToCart(btn, defaultVariantId) {
+    const card = btn.closest('.truely-card');
+    const select = card.querySelector('select.truely-variant-select');
+    const variantId = select ? select.value : defaultVariantId;
+
+    const cartDrawer = document.querySelector('cart-drawer');
+    const cartNotification = document.querySelector('cart-notification');
+    const cart = cartDrawer || cartNotification;
+
+    let formData = new FormData();
+    formData.append('id', variantId);
+    formData.append('quantity', 1);
+
+    if (cart) {
+      const sections = cart.getSectionsToRender().map((section) => section.id);
+      formData.append('sections', sections.join(','));
+      formData.append('sections_url', window.location.pathname);
+    }
+
+    const config = {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: formData,
+    };
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', config)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          alert(data.description);
+          return;
+        }
+
+        if (cart) {
+          cart.renderContents(data);
+        } else {
+          window.location.href = '/cart';
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 </script>
 

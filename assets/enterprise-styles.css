@@ -44,6 +44,11 @@
   margin: 0 auto;
 }
 
+.ent-hero-content-wrapper.ent-full-width {
+  max-width: 100%;
+  padding: 0 2rem;
+}
+
 .ent-hero-content {
   max-width: 600px;
   color: #ffffff;

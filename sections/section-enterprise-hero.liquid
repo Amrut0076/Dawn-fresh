@@ -1,8 +1,84 @@
 {{ 'enterprise-styles.css' | asset_url | stylesheet_tag }}
 
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+
+  #ent-hero-{{ section.id }} .ent-hero-title {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    color: {{ section.settings.text_color }};
+  }
+  #ent-hero-{{ section.id }} .ent-hero-text {
+    font-size: {{ section.settings.text_size_mobile }}px;
+    color: {{ section.settings.text_color }};
+  }
+  #ent-hero-{{ section.id }} .ent-hero-subtitle {
+    color: {{ section.settings.text_color }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #ent-hero-{{ section.id }} .ent-hero-title {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+    #ent-hero-{{ section.id }} .ent-hero-text {
+      font-size: {{ section.settings.text_size }}px;
+    }
+  }
+
+  /* Button 1 Styles */
+  #ent-hero-{{ section.id }} .ent-btn-primary {
+    background-color: {{ section.settings.button_1_bg }};
+    color: {{ section.settings.button_1_text }};
+    border-color: {{ section.settings.button_1_border }};
+  }
+  #ent-hero-{{ section.id }} .ent-btn-primary:hover {
+    background-color: {{ section.settings.button_1_hover_bg }};
+    color: {{ section.settings.button_1_hover_text }};
+    border-color: {{ section.settings.button_1_hover_border }};
+  }
+
+  /* Button 2 Styles */
+  #ent-hero-{{ section.id }} .ent-btn-secondary {
+    background-color: {{ section.settings.button_2_bg }};
+    color: {{ section.settings.button_2_text }};
+    border-color: {{ section.settings.button_2_border }};
+  }
+  #ent-hero-{{ section.id }} .ent-btn-secondary:hover {
+    background-color: {{ section.settings.button_2_hover_bg }};
+    color: {{ section.settings.button_2_hover_text }};
+    border-color: {{ section.settings.button_2_hover_border }};
+  }
+
+  /* Mobile Overrides */
+  @media screen and (max-width: 767px) {
+     #ent-hero-{{ section.id }} {
+        min-height: {{ section.settings.mobile_height }}px !important;
+     }
+     #ent-hero-{{ section.id }} .ent-hero-content {
+        text-align: {{ section.settings.mobile_text_alignment }} !important;
+     }
+     #ent-hero-{{ section.id }} .ent-hero-actions {
+        justify-content: {% if section.settings.mobile_text_alignment == 'center' %}center{% elsif section.settings.mobile_text_alignment == 'right' %}flex-end{% else %}flex-start{% endif %} !important;
+     }
+  }
+{%- endstyle -%}
+
 <div
   id="ent-hero-{{ section.id }}"
-  class="ent-hero-section"
+  class="ent-hero-section section-{{ section.id }}-padding"
   style="min-height: {{ section.settings.section_height }}px;"
 >
   {%- if section.settings.image != blank -%}
@@ -28,22 +104,22 @@
     style="background: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};"
   ></div>
 
-  <div class="ent-hero-content-wrapper">
+  <div class="ent-hero-content-wrapper {% if section.settings.full_width %}ent-full-width{% endif %}">
     <div class="ent-hero-content ent-align-{{ section.settings.text_alignment }}">
       {%- if section.settings.subheading != blank -%}
-        <span class="ent-hero-subtitle" style="color: {{ section.settings.text_color }};">
+        <span class="ent-hero-subtitle">
           {{- section.settings.subheading | escape -}}
         </span>
       {%- endif -%}
 
       {%- if section.settings.heading != blank -%}
-        <h2 class="ent-hero-title" style="color: {{ section.settings.text_color }};">
+        <h2 class="ent-hero-title">
           {{ section.settings.heading | escape }}
         </h2>
       {%- endif -%}
 
       {%- if section.settings.text != blank -%}
-        <div class="ent-hero-text" style="color: {{ section.settings.text_color }};">
+        <div class="ent-hero-text">
           {{ section.settings.text }}
         </div>
       {%- endif -%}
@@ -74,12 +150,13 @@
   "settings": [
     {
       "type": "header",
-      "content": "Image Settings"
+      "content": "Layout"
     },
     {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Background Image"
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Content",
+      "default": false
     },
     {
       "type": "range",
@@ -88,8 +165,27 @@
       "max": 1000,
       "step": 10,
       "unit": "px",
-      "label": "Section Height",
+      "label": "Desktop Height",
       "default": 650
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Height",
+      "default": 450
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
     },
     {
       "type": "header",
@@ -117,13 +213,24 @@
     {
       "type": "select",
       "id": "text_alignment",
-      "label": "Text Alignment",
+      "label": "Desktop Text Alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
       ],
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_alignment",
+      "label": "Mobile Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
     },
     {
       "type": "color",
@@ -144,36 +251,196 @@
       "default": "Enterprise Quality"
     },
     {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 32
+    },
+    {
       "type": "richtext",
       "id": "text",
       "label": "Text",
       "default": "<p>Experience the difference with our premium collection.</p>"
     },
     {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Size (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Size (Mobile)",
+      "default": 16
+    },
+    {
       "type": "header",
-      "content": "Buttons"
+      "content": "Button 1"
     },
     {
       "type": "text",
       "id": "button_label_1",
-      "label": "Button 1 Label",
+      "label": "Label",
       "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "button_link_1",
-      "label": "Button 1 Link"
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "button_1_bg",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_1_text",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_1_border",
+      "label": "Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_1_hover_bg",
+      "label": "Hover Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_1_hover_text",
+      "label": "Hover Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_1_hover_border",
+      "label": "Hover Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
     },
     {
       "type": "text",
       "id": "button_label_2",
-      "label": "Button 2 Label",
+      "label": "Label",
       "default": "Learn More"
     },
     {
       "type": "url",
       "id": "button_link_2",
-      "label": "Button 2 Link"
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "button_2_bg",
+      "label": "Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_2_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_2_border",
+      "label": "Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_2_hover_bg",
+      "label": "Hover Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_2_hover_text",
+      "label": "Hover Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_2_hover_border",
+      "label": "Hover Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
     }
   ],
   "presets": [

@@ -1,0 +1,148 @@
+/* Enterprise Theme Replica Styles */
+
+.ent-hero-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 600px; /* Default height */
+}
+
+.ent-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.ent-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ent-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Default overlay */
+  z-index: 2;
+}
+
+.ent-hero-content-wrapper {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  padding: 0 5%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.ent-hero-content {
+  max-width: 600px;
+  color: #ffffff;
+}
+
+/* Alignment Modifiers */
+.ent-align-left {
+  text-align: left;
+}
+.ent-align-center {
+  text-align: center;
+  margin: 0 auto;
+}
+.ent-align-right {
+  text-align: right;
+  margin-left: auto;
+}
+
+.ent-hero-subtitle {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  display: block;
+  font-weight: 600;
+}
+
+.ent-hero-title {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.ent-hero-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.ent-hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ent-align-center .ent-hero-actions {
+  justify-content: center;
+}
+.ent-align-right .ent-hero-actions {
+  justify-content: flex-end;
+}
+
+/* Button Styles */
+.ent-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.ent-btn-primary {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.ent-btn-primary:hover {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.ent-btn-secondary {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.ent-btn-secondary:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .ent-hero-section {
+    min-height: 450px;
+  }
+
+  .ent-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .ent-hero-content {
+    padding: 2rem 0;
+  }
+}

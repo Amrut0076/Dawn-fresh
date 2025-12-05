@@ -1,0 +1,185 @@
+{{ 'enterprise-styles.css' | asset_url | stylesheet_tag }}
+
+<div
+  id="ent-hero-{{ section.id }}"
+  class="ent-hero-section"
+  style="min-height: {{ section.settings.section_height }}px;"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="ent-hero-bg">
+      {{
+        section.settings.image
+        | image_url: width: 3000
+        | image_tag: loading: 'eager', widths: '550, 750, 1100, 1500, 1780, 2000, 3000', alt: section.settings.image.alt
+        | escape
+      }}
+    </div>
+  {%- else -%}
+    <div
+      class="ent-hero-bg"
+      style="background-color: #f4f4f4; display: flex; align-items: center; justify-content: center;"
+    >
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {%- endif -%}
+
+  <div
+    class="ent-hero-overlay"
+    style="background: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};"
+  ></div>
+
+  <div class="ent-hero-content-wrapper">
+    <div class="ent-hero-content ent-align-{{ section.settings.text_alignment }}">
+      {%- if section.settings.subheading != blank -%}
+        <span class="ent-hero-subtitle" style="color: {{ section.settings.text_color }};">
+          {{- section.settings.subheading | escape -}}
+        </span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ent-hero-title" style="color: {{ section.settings.text_color }};">
+          {{ section.settings.heading | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="ent-hero-text" style="color: {{ section.settings.text_color }};">
+          {{ section.settings.text }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label_1 != blank or section.settings.button_label_2 != blank -%}
+        <div class="ent-hero-actions">
+          {%- if section.settings.button_label_1 != blank -%}
+            <a href="{{ section.settings.button_link_1 }}" class="ent-btn ent-btn-primary">
+              {{ section.settings.button_label_1 | escape }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 }}" class="ent-btn ent-btn-secondary">
+              {{ section.settings.button_label_2 | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Enterprise Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 400,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Section Height",
+      "default": 650
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay Opacity",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Enterprise Quality"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Experience the difference with our premium collection.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button 1 Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button 2 Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button 2 Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Enterprise Hero"
+    }
+  ]
+}
+{% endschema %}

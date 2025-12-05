@@ -81,7 +81,7 @@
       "name": "Enterprise Hero",
       "settings": {
         "image": "shopify://shop_images/josef-faustmann-151nS8pCCo0-unsplash.jpg",
-        "section_height": 650,
+        "section_height": 510,
         "overlay_color": "#000000",
         "overlay_opacity": 0.3,
         "text_alignment": "left",
